@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>API Documentation</h1>
+    <p><strong><%= description %></strong></p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>URL</th>
+                <th>Method</th>
+                <th>Request Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% apiDocs?.forEach((endpoint, index) => { %>
+                <tr>
+                    <td><%= endpoint?.title %></td>
+                    <td><%= endpoint?.url %></td>
+                    <td><%= endpoint?.method %></td>
+                    <td>
+                        <textarea style="width: 100%;" readonly disabled><%= endpoint?.requestType %></textarea>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>
