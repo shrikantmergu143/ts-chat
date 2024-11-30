@@ -1,20 +1,14 @@
-import express, { Application } from "express";
-import cors, { CorsOptions } from "cors";
-import Routes from "./routes";
+import express, { Request, Response } from 'express';
 
-export default class Server {
-  constructor(app: Application) {
-    this.config(app);
-    new Routes(app);
-  }
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-  private config(app: Application): void {
-    const corsOptions: CorsOptions = {
-      origin: "http://localhost:8081"
-    };
+app.use(express.json());
 
-    app.use(cors(corsOptions));
-    app.use(express.json());
-    app.use(express.urlencoded({ extended: true }));
-  }
-}
+app.get('/', (req: Request, res: Response) => {
+    res.send('Hello, Vercel with TypeScript and Express!');
+});
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
