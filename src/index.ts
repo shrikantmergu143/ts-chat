@@ -4,7 +4,8 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
-import ejs from 'ejs';
+import { registerSocketServer } from './socketServer';
+import appRouter from './router/appRouter';
 
 dotenv.config();
 
@@ -24,23 +25,13 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-let apiDocs: Array<{ url: string; method: string; requestType: string }> = [];
+let apiDocs: Array<{ url: string; method: string; requestType: any }> = [];
 if (!fs.existsSync(apiDocsPath)) {
     fs.writeFileSync(apiDocsPath, JSON.stringify({ description: 'Dynamically generated API documentation', apiEndpoints: [] }, null, 2));
 } else {
     const savedDocs = fs.readFileSync(apiDocsPath, 'utf-8');
     apiDocs = JSON.parse(savedDocs).apiEndpoints || [];
 }
-
-// Sample API endpoint 1: GET /users
-app.get('/users', (req: Request, res: Response) => {
-    res.json([{ id: 1, name: 'John Doe' }]);
-});
-
-// Sample API endpoint 2: POST /users
-app.post('/users', (req: Request, res: Response) => {
-    res.status(201).send('User created');
-});
 
 // Endpoint to return the dynamic API documentation as HTML (rendered via EJS)
 app.get('/api-docs', (req: Request, res: Response) => {
@@ -59,15 +50,19 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Hello, Vercel with TypeScript and Express!');
 });
 
+appRouter(app);
+
 // Connect to MongoDB
 mongoose.set('strictQuery', false);
 mongoose
     .connect(process.env.MONGO_URL as string)
     .then(() => {
         console.log('Connected to MongoDB');
-        app.listen(PORT, () => {
+        const server = app.listen(PORT, () => {
             console.log(`Server running on port ${PORT}`);
         });
+        // const server = http.createServer(app);
+        registerSocketServer(server)
     })
     .catch((error) => console.error('MongoDB connection error:', error));
 

@@ -5,7 +5,9 @@
       "title":"title",
       "url": "/users",
       "method": "GET",
-      "requestType": "JSON"
+      "requestType": {
+        "body":""
+      }
     }
   ]
 }

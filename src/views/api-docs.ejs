@@ -51,7 +51,7 @@
                     <td><%= endpoint?.url %></td>
                     <td><%= endpoint?.method %></td>
                     <td>
-                        <textarea style="width: 100%;" readonly disabled><%= endpoint?.requestType %></textarea>
+                        <textarea style="width: 100%;" readonly disabled><%= JSON.stringify(endpoint?.requestType) %></textarea>
                     </td>
                 </tr>
             <% }); %>
