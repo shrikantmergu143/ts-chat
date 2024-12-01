@@ -120,4 +120,62 @@ const getUserPayload = (user: any) =>{
     }
     return payload;
 }
-export { getUserPayload};
+export interface IChatGroupsMember {
+    name:string;
+    group_type:"direct" | "group";
+    users:string[];
+    profile_url:string;
+    created_by:string;
+    is_active:boolean;
+    _id:string;
+    created_at:string;
+    updated_at:string;
+    group_id:string;
+}
+const getChatMemberPayload = (data: any) =>{
+    const payload:IChatGroupsMember = {
+        name:"",
+        group_type:"direct",
+        users:[],
+        profile_url:"",
+        created_by:"",
+        is_active:false,
+        _id:"",
+        created_at:"",
+        updated_at:"",
+        group_id:"",
+    };
+    
+    if(data?.name){
+        payload.name = data?.name
+    }
+    if(data?.group_type){
+        payload.group_type = data?.group_type
+    }
+    if(data?.users){
+        payload.users = data?.users
+    }
+    if(data?.profile_url){
+        payload.profile_url = data?.profile_url
+    }
+    if(data?.created_by){
+        payload.created_by = data?.created_by
+    }
+    if(data?.is_active){
+        payload.is_active = data?.is_active
+    }
+    if(data?._id){
+        payload._id = data?._id
+    }
+    if(data?.created_at){
+        payload.created_at = data?.created_at
+    }
+    if(data?.updated_at){
+        payload.updated_at = data?.updated_at
+    }
+    if(data?.group_id){
+        payload.group_id = data?.group_id
+    }
+    return payload;
+}
+export { getUserPayload, getChatMemberPayload};

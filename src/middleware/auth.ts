@@ -8,17 +8,21 @@ const { TOKEN_KEY } = process.env;
 
 export interface IRequestUserDetails extends Request {
   body: {
-    email: string;
-    password: string;
-    username: string;
-    first_name: string;
-    last_name: string;
-    access_token: string;
-    user_id:string;
-    iat:number;
-    exp:number;
-  };
-  user?: DecodedToken; // Assuming `DecodedToken` is your custom type
+    email?: string;
+    password?: string;
+    username?: string;
+    first_name?: string;
+    last_name?: string;
+    access_token?: string;
+    user_id?:string;
+    iat?:number;
+    exp?:number;
+    [key: string]: any;
+    name: string;
+    group_type: string;
+    users: string[];
+  } | any;
+  user?: DecodedToken | any;
 }
 
 const verifyToken = (req: IRequestUserDetails, res: Response, next: NextFunction): any => {

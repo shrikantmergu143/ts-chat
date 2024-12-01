@@ -8,6 +8,9 @@ interface DecodedToken {
     userId: string; // Replace this with the actual fields from your JWT
     user_id: string; // Replace this with the actual fields from your JWT
     user: any;
+    [key: string]: any; // Optional, to allow additional properties
+    iat: number; // Issued at timestamp
+    exp: number; // Expiry timestamp  
 }
 interface IRequest extends Request {
     user: DecodedToken; // `user` could be null if not authenticated
