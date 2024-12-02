@@ -9,7 +9,6 @@ const getUserDetails = async (req: IRequestUserDetails, res: Response): Promise<
     return res.status(response?.status).json(response?.data);
 }
 
-
 const getUsersDetails = async (req: {user_id:string}): Promise<any> => {
     try {
         const userResponse = await UserModule.findById(req?.user_id);

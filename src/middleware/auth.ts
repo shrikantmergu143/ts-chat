@@ -19,8 +19,10 @@ export interface IRequestUserDetails extends Request {
     exp?:number;
     [key: string]: any;
     name: string;
-    group_type: string;
+    group_type: string | "direct" | "group";
     users: string[];
+    page?: number;
+    limit?: number;
   } | any;
   user?: DecodedToken | any;
 }
