@@ -10,6 +10,8 @@
             margin: 0;
             padding: 20px;
             background-color: #f4f4f4;
+            line-height: 1.2;
+            font-size: 13px;
         }
         h1 {
             color: #333;
@@ -29,6 +31,7 @@
         th {
             background-color: #f2f2f2;
         }
+        .payload-content{flex: 1 1 auto;padding: 1rem 1rem;max-width: 600px;padding: 10px;background-color: #ddd;width: 100%;display: block;font-size: 13px;}
     </style>
 </head>
 <body>
@@ -51,7 +54,7 @@
                     <td><%= endpoint?.url %></td>
                     <td><%= endpoint?.method %></td>
                     <td>
-                        <textarea style="width: 100%;" readonly disabled><%= JSON.stringify(endpoint?.requestType) %></textarea>
+                        <div contenteditable="" class="payload-content" style="width: 100%;" readonly disabled><%= JSON.stringify(endpoint?.requestType) %></div>
                     </td>
                 </tr>
             <% }); %>

@@ -20,6 +20,10 @@ const ChatGroups = new Schema<IChatGroups>({
         validate: {
             validator: function (users: string[]) {
                 // Normalize emails and check for duplicates
+                if (this.group_type === 'group') {
+                    // Ensure exactly 2 users for direct chat
+                    return users.length > 0;
+                }
                 const normalized = users.map(email => email.toLowerCase().trim());
                 return new Set(normalized).size === normalized.length;
             },
@@ -41,7 +45,9 @@ const ChatGroups = new Schema<IChatGroups>({
     },
 
 });
-ChatGroups.index({ group_type: 1, users: 1 }, { unique: true });
+// ChatGroups.index({ group_type: 1 }, { unique: true });
+ChatGroups.index({ name: 'text', profile_url: 'text' });  // You can add more fields to this list as needed
+
 
 // Create the model using the interface
 const ChatGroupSchema = mongoose.model<IChatGroups>("ChatGroup", ChatGroups);

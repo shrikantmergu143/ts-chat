@@ -25,6 +25,8 @@ const postSignUp = async (req: IRequestSignUp, res: Response): Promise<any> => {
         const access_token = jwt.sign(
             {
                 user_id: user._id,
+                _id: user._id,
+                id: user._id,
                 email: email,
                 is_admin: user?.is_admin,
                 user_type: user?.user_type,

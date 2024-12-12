@@ -2,11 +2,58 @@
   "description": "Dynamically generated API documentation",
   "apiEndpoints": [
     {
-      "title":"title",
-      "url": "/users",
+      "title": "Sing Up",
+      "url": "/api/sign-up",
+      "method": "POST",
+      "requestType": {
+        "username": "user-1",
+        "password": "Shrikant@123",
+        "email": "shrikantmergu123@gmail.com",
+        "first_name": "Shrikant",
+        "last_name": "Mergu"
+      }
+    },
+    {
+      "title": "Sing In",
+      "url": "/api/sign-in",
+      "method": "POST",
+      "requestType": {
+        "password": "Shrikant@123",
+        "email": "shrikantmergu143@gmail.com"
+      }
+    },
+    {
+      "title": "Create One to One Chat",
+      "url": "/api/chat/create-group",
+      "method": "POST",
+      "requestType": {
+        "users": ["shrikantmergu143@gmail.com", "shrikantmergu123@gamil.com"],
+        "group_type": "direct"
+      }
+    },
+    {
+      "title": "Create Group Chat",
+      "url": "/api/chat/create-group",
+      "method": "POST",
+      "requestType": {
+        "users": ["674c1769a49662eeeb4f4281"],
+        "group_type": "group",
+        "name": "Group - 1"
+      }
+    },
+    {
+      "title": "Get User Details",
+      "url": "/api/user-details",
+      "method": "GET"
+    },
+    {
+      "title": "Get Chat Group List",
+      "url": "/api/chat/get-group",
       "method": "GET",
       "requestType": {
-        "body":""
+        "page":"1",
+        "limit":"10",
+        "search":""
       }
     }
   ]
