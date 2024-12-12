@@ -193,7 +193,7 @@ export interface IChatGroupItem{
     group_id: string;
 }
 const getChatGroupItemPayload = (item: any) =>{
-    const payload={
+    const payload:any ={
         _id:"",
         id:"",
         name:"",
@@ -212,6 +212,12 @@ const getChatGroupItemPayload = (item: any) =>{
     }//
     if(item?.name){
         payload.name = item?.name;
+    }
+    if(item?.members_details){
+        payload.members_details = item?.members_details;
+    }
+    if(item?.group_member){
+        payload.group_member = item?.group_member;
     }
     if(item?.group_type){
         payload.group_type = item?.group_type;
@@ -239,4 +245,31 @@ const getChatGroupItemPayload = (item: any) =>{
     }
     return payload;
 }
-export { getUserPayload, getChatMemberPayload, getChatGroupItemPayload};
+
+const getGroupMembersItem = (item: any) =>{
+    const payload:any ={
+        _id: "",
+        group_id: "",
+        user_id: "",
+        joined_at: "",
+        updated_at: "",
+    }
+    if(item?._id){
+        payload._id = item?._id;
+        payload.id = item?._id;
+    }
+    if(item?.group_id){
+        payload.group_id = item?.group_id;
+    }
+    if(item?.user_id){
+        payload.user_id = item?.user_id;
+    }
+    if(item?.joined_at){
+        payload.joined_at = item?.joined_at;
+    }
+    if(item?.updated_at){
+        payload.updated_at = item?.updated_at;
+    }
+    return payload;
+}
+export { getGroupMembersItem, getUserPayload, getChatMemberPayload, getChatGroupItemPayload};

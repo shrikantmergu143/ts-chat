@@ -4,6 +4,7 @@ const App_url = {
     USER_DETAILS: "/api/user-details",
     CREATE_CHAT_GROUP: "/api/chat/create-group",
     GET_CHAT_GROUP: "/api/chat/get-group",
+    GET_GROUP_DETAILS: "/api/chat/get-group-details",
 }
 
 export { App_url };

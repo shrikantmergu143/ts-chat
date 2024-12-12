@@ -25,7 +25,7 @@ const createChatGroup = async (req:IRequestUserDetails, res: Response): Promise<
       const chatGroup = new ChatGroupSchema({
         name: `${normalizedUsers[0]},${normalizedUsers[1]}`,
         group_type,
-        created_by: req.user.id,
+        created_by: req?.user?.user_id,
         users: normalizedUsers
       });
   
@@ -33,15 +33,16 @@ const createChatGroup = async (req:IRequestUserDetails, res: Response): Promise<
       res.status(200).json({ message: 'Chat created successfully', data: getChatMemberPayload(chatGroup) });
     }else{
       if(normalizedUsers?.length >0){
+        const usersList = [...normalizedUsers, req?.user?.user_id]
         const chatGroup = new ChatGroupSchema({
           name: name,
           group_type,
-          created_by: req.user.id,
-          users: normalizedUsers
+          created_by: req?.user?.user_id,
+          users: usersList
         });
         await chatGroup.save();
         // Add users to the group
-        for (const userId of users) {
+        for (const userId of usersList) {
           const groupMember = new GroupMember({
             group_id: chatGroup._id,
             user_id: userId,
@@ -49,7 +50,7 @@ const createChatGroup = async (req:IRequestUserDetails, res: Response): Promise<
           await groupMember.save();
         }
   
-        res.status(200).json({ message: 'Chat created successfully', chatGroup });
+        res.status(200).json({ message: 'Chat created successfully', data:chatGroup });
       }else{
         res.status(400).json({ message: 'Please select users' });
       }

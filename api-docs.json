@@ -51,10 +51,27 @@
       "url": "/api/chat/get-group",
       "method": "GET",
       "requestType": {
-        "page":"1",
-        "limit":"10",
-        "search":""
+        "page": 1,
+        "limit": "10",
+        "search": "",
+        "group_type": "group"
       }
+    },
+    {
+      "title": "Get One to One Chat Group",
+      "url": "/api/chat/get-group",
+      "method": "GET",
+      "requestType": {
+        "page": 1,
+        "limit": "10",
+        "search": "",
+        "group_type": "direct"
+      }
+    },
+    {
+      "title": "Get Group Details",
+      "url": "/api/chat/get-group-details/:group_id",
+      "method": "GET"
     }
   ]
 }

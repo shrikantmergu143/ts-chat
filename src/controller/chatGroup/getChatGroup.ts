@@ -5,13 +5,13 @@ import { getChatGroupItemPayload } from "../../common/userPayload";
 
 const getChatGroup = async (req: IRequestUserDetails, res: Response): Promise<any> => {
   try {
-    const userEmail = req?.user?.email;
+    const groupType = req.query.group_type || req.body.group_type;
+    const userEmail = groupType === "group"? req?.user?.user_id :req?.user?.email;
     if (!userEmail) {
       return res.status(400).json({ error: "User email not provided." });
     }
     const page = parseInt(req.query.page || req.body.page || "1", 10);
     const limit = parseInt(req.query.limit || req.body.limit || "4", 10);
-    const groupType = req.query.group_type || req.body.group_type;
     const search = req.query.search || req.body.search;
     if (isNaN(page) || page < 1) {
       return res.status(400).json({ error: "Invalid page number." });

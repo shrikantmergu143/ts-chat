@@ -7,6 +7,7 @@ import verifyToken from "../middleware/auth";
 import getUserDetails from "../controller/auth/getUserDetails";
 import createChatGroup from "../controller/chatGroup/createChatGroup";
 import getChatGroup from "../controller/chatGroup/getChatGroup";
+import getGroupDetails from "../controller/chatGroup/getGroupDetails";
 
 const router  = express.Router();
 const validator = createValidator({});
@@ -50,5 +51,6 @@ router.post(App_url.signIn,  validator.body(loginSchema), authControllers.postSi
 router.get(App_url.USER_DETAILS, verifyToken, getUserDetails);
 router.get(App_url.GET_CHAT_GROUP, validator.query(getChatGroupSchema) || validator.body(getChatGroupSchema), verifyToken, getChatGroup);
 router.post(App_url.CREATE_CHAT_GROUP, validator.body(createChatSchema), verifyToken, createChatGroup);
+router.get(`${App_url.GET_GROUP_DETAILS}/:group_id`, verifyToken, getGroupDetails);
 
 export { router as authRoutes };
