@@ -205,6 +205,7 @@ const getChatGroupItemPayload = (item: any) =>{
         created_at:"",
         updated_at:"",
         group_id:"",
+        mode:"",
     }
     if(item?._id){
         payload._id = item?._id;
@@ -242,6 +243,9 @@ const getChatGroupItemPayload = (item: any) =>{
     }
     if(item?.group_id){
         payload.group_id = item?.group_id;
+    }
+    if(item?.mode){
+        payload.mode = item?.mode;
     }
     return payload;
 }

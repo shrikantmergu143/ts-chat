@@ -6,7 +6,7 @@ import { getChatMemberPayload } from "../../common/userPayload";
 
 
 const createChatGroup = async (req:IRequestUserDetails, res: Response): Promise<any> => {
-  const { name, group_type, users } = req.body;  // name, group_type, users (array of user ids)
+  const { name, group_type, users, mode = "private" } = req.body;  // name, group_type, users (array of user ids)
   const normalizedUsers = users?.filter((item:string)=>item != req?.user?.id)?.map((email:string) => email.toLowerCase().trim()).sort();
   if (new Set(normalizedUsers).size !== normalizedUsers.length) {
       return res.status(400).json({ error: "Users array contains duplicate email addresses." });
@@ -26,7 +26,8 @@ const createChatGroup = async (req:IRequestUserDetails, res: Response): Promise<
         name: `${normalizedUsers[0]},${normalizedUsers[1]}`,
         group_type,
         created_by: req?.user?.user_id,
-        users: normalizedUsers
+        users: normalizedUsers,
+        mode:mode,
       });
   
       await chatGroup.save();
@@ -38,7 +39,8 @@ const createChatGroup = async (req:IRequestUserDetails, res: Response): Promise<
           name: name,
           group_type,
           created_by: req?.user?.user_id,
-          users: usersList
+          users: usersList,
+          mode:mode,
         });
         await chatGroup.save();
         // Add users to the group

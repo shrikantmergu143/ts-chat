@@ -1,6 +1,6 @@
 import WebSocket, { WebSocketServer } from 'ws';
 import { IncomingMessage } from 'http';
-import { validateToken } from './middleware/authSocket';
+import { validateToken, verifyTokenSocket } from './middleware/authSocket';
 import { newConnectionHandler } from './socketHandlers/newConnectionHandler';
 
 interface WebSocketMessage {
@@ -12,19 +12,22 @@ interface WebSocketMessage {
 interface AuthenticatedRequest extends IncomingMessage {
   user?: any; // Define `user` type if possible
 }
+interface CustomSocket extends WebSocket {
+    handshake?: any;
+    user?: any;
+}
 
-const connectedSockets: WebSocket[] = [];
+const connectedSockets: CustomSocket[] = [];
 
 export const registerSocketServer = (server: any) => {
   const socketServer = new WebSocketServer({ server });
 
-  socketServer.on('connection', (socket: WebSocket, req: AuthenticatedRequest) => {
-    connectedSockets.push(socket);
+  socketServer.on('connection', (socket: CustomSocket | any, req: AuthenticatedRequest) => {
 
     // Verify client connection access_token
-    const authResponse = validateToken(req);
-
+    const authResponse = validateToken(socket, req);
     if (authResponse !== 'NOT_AUTHORIZED') {
+      connectedSockets.push(socket);
       newConnectionHandler(req.user);
       socket.send(JSON.stringify({ userDetails: req.user, messages: 'WebSocket connected successfully' }));
     } else {

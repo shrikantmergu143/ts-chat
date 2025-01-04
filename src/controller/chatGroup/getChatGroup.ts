@@ -6,7 +6,7 @@ import { getChatGroupItemPayload } from "../../common/userPayload";
 const getChatGroup = async (req: IRequestUserDetails, res: Response): Promise<any> => {
   try {
     const groupType = req.query.group_type || req.body.group_type;
-    const userEmail = groupType === "group"? req?.user?.user_id :req?.user?.email;
+    const userEmail = groupType ? groupType === "group"? [req?.user?.user_id] :[req?.user?.email] : [req?.user?.user_id, req?.user?.email];
     if (!userEmail) {
       return res.status(400).json({ error: "User email not provided." });
     }
@@ -21,7 +21,7 @@ const getChatGroup = async (req: IRequestUserDetails, res: Response): Promise<an
     }
     const skip = (page - 1) * limit;
     const filter: any = {
-      users: { $in: [userEmail] },
+      users: { $in: userEmail },
     };
 
     if (search && search.trim()) {
@@ -29,7 +29,9 @@ const getChatGroup = async (req: IRequestUserDetails, res: Response): Promise<an
     }
 
     if (groupType) {
-      filter.group_type = groupType;  // Direct comparison, not using $in
+      filter.group_type = groupType; // Filter for a specific group type
+    }else{
+      filter.group_type = ["group", "direct"];
     }
 
     // Fetch chat groups
@@ -41,6 +43,8 @@ const getChatGroup = async (req: IRequestUserDetails, res: Response): Promise<an
 
     const totalRecords = await ChatGroupSchema.countDocuments({
       users: { $in: [userEmail] },
+      group_type: groupType,
+      ...(search && { $text: { $search: search.trim() } }),
     });
 
     const payload = groupChatList.map((item) => getChatGroupItemPayload(item));

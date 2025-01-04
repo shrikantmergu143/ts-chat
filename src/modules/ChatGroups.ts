@@ -9,10 +9,12 @@ interface IChatGroups extends Document {
     created_at: Date;
     updated_at: Date;
     is_active: boolean;
+    mode: string;
 }
 const ChatGroups = new Schema<IChatGroups>({
     name: { type: String, required: true},
     group_type: { type: String, enum: ['group', 'direct'], required: true },
+    mode: { type: String, enum: ['private', 'public'], required: true },
     // users: { type: [String], required: true },
     users: {
         type: [String],
