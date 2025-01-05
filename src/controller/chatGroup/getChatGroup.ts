@@ -2,6 +2,7 @@ import { Response, Request } from "express";
 import ChatGroupSchema from "../../modules/ChatGroups";
 import { IRequestUserDetails } from "../../middleware/auth";
 import { getChatGroupItemPayload } from "../../common/userPayload";
+import { getEmailUsers } from "../../common/utils";
 
 const getChatGroup = async (req: IRequestUserDetails, res: Response): Promise<any> => {
   try {
@@ -47,7 +48,18 @@ const getChatGroup = async (req: IRequestUserDetails, res: Response): Promise<an
       ...(search && { $text: { $search: search.trim() } }),
     });
 
-    const payload = groupChatList.map((item) => getChatGroupItemPayload(item));
+    const payload = groupChatList.map((item) => {
+      const payloadItem = getChatGroupItemPayload(item);
+      if(payloadItem?.users){
+        const directEmail = getEmailUsers(req?.user?.email, payloadItem?.users);
+        if(directEmail){
+          payloadItem.name = directEmail;
+        }
+      }
+      return {
+        ...payloadItem,
+      }
+    });
 
     res.status(200).json({
       data: {
