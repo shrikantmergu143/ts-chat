@@ -50,7 +50,7 @@ const getChatGroup = async (req: IRequestUserDetails, res: Response): Promise<an
 
     const payload = groupChatList.map((item) => {
       const payloadItem = getChatGroupItemPayload(item);
-      if(payloadItem?.users){
+      if(payloadItem?.users && payloadItem?.group_type == "direct"){
         const directEmail = getEmailUsers(req?.user?.email, payloadItem?.users);
         if(directEmail){
           payloadItem.name = directEmail;
