@@ -23,6 +23,10 @@ export interface IRequestUserDetails extends Request {
     users: string[];
     page?: number;
     limit?: number;
+    message?:string;
+    media_url?:string;
+    group_id?:string;
+    message_type?:string;
   } | any;
   user?: DecodedToken | any;
 }

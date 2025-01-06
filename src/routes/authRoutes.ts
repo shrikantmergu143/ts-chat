@@ -8,6 +8,7 @@ import getUserDetails from "../controller/auth/getUserDetails";
 import createChatGroup from "../controller/chatGroup/createChatGroup";
 import getChatGroup from "../controller/chatGroup/getChatGroup";
 import getGroupDetails from "../controller/chatGroup/getGroupDetails";
+import chatMessagesControllers from "../controller/chatMessages/chatGroupControllers";
 
 const router  = express.Router();
 const validator = createValidator({});
@@ -46,11 +47,21 @@ const getChatGroupSchema = Joi.object({
     search: Joi.string().allow("").optional(),
 });
 
+const createChatMessageSchema = Joi.object({
+    message:Joi.string(),
+    media_url:Joi.string().allow("").optional(),
+    group_id:Joi.string(),
+    reply_id:Joi.string().allow("").optional(),
+    message_type: Joi.string().valid("image", "video", "text", "file"), // Removed optional chaining
+});
+
 router.post(App_url.signUp, validator.body(registerSchema), authControllers.postSignUp);
 router.post(App_url.signIn,  validator.body(loginSchema), authControllers.postSignIn);
 router.get(App_url.USER_DETAILS, verifyToken, getUserDetails);
 router.get(App_url.GET_CHAT_GROUP, validator.query(getChatGroupSchema) || validator.body(getChatGroupSchema), verifyToken, getChatGroup);
 router.post(App_url.CREATE_CHAT_GROUP, validator.body(createChatSchema), verifyToken, createChatGroup);
 router.get(`${App_url.GET_GROUP_DETAILS}/:group_id`, verifyToken, getGroupDetails);
+router.post(App_url.CREATE_CHAT_MESSAGE, validator.body(createChatMessageSchema), verifyToken, chatMessagesControllers.createChatMessage);
+router.put(`${App_url.UPDATE_CHAT_MESSAGE}/:message_id`, validator.body(createChatMessageSchema), verifyToken, chatMessagesControllers.createChatMessage);
 
 export { router as authRoutes };
