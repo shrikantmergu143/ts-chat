@@ -63,5 +63,6 @@ router.post(App_url.CREATE_CHAT_GROUP, validator.body(createChatSchema), verifyT
 router.get(`${App_url.GET_GROUP_DETAILS}/:group_id`, verifyToken, getGroupDetails);
 router.post(App_url.CREATE_CHAT_MESSAGE, validator.body(createChatMessageSchema), verifyToken, chatMessagesControllers.createChatMessage);
 router.put(`${App_url.UPDATE_CHAT_MESSAGE}/:message_id`, validator.body(createChatMessageSchema), verifyToken, chatMessagesControllers.createChatMessage);
+router.get(`${App_url.GET_CHAT_MESSAGES_LIST}/:group_id`, verifyToken, chatMessagesControllers.getChatMessages);
 
 export { router as authRoutes };

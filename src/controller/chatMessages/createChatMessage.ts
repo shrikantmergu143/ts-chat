@@ -22,8 +22,8 @@ const createChatMessage = async (req: IRequestUserDetails, res: Response): Promi
             payload.reply_id = request.reply_id; // Only include reply_id if provided
         }
         if(request?.id){
-            const messageData:any = ChatMessages.findById(request?.id);
-            if(!messageData?._id){
+            const messageData:any = await ChatMessages.findById(request?.id);
+            if(!messageData?._id || messageData?.sender_id !== req?.user?.id){
                 return res.status(400).json({ error: "Message not found", msg: "Message not found" });
             }
             await ChatMessages.findByIdAndUpdate(request.id, payload, { new: true });
