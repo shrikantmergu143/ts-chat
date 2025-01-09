@@ -32,7 +32,7 @@ const getGroupDetails = async (req: IRequestUserDetails, res: Response): Promise
                 });
                 if(userData1){
                     payload.name = `${userData1?.first_name} ${userData1?.last_name}`
-                    payload.members_details = getUserPayload(userData1);
+                    payload.members_details = [getUserPayload(userData1)];
                 }else{
                     payload.name = directEmail;
                 }
