@@ -11,15 +11,20 @@ const createChatMessage = async (req: IRequestUserDetails, res: Response): Promi
     try {
         const payload: any = {
             group_id: request?.group_id || "",
-            sender_id: req?.user?.id,
             message: request?.message || "",
             message_type: request?.message_type || "text",
-            media_url: request?.media_url || "",
-            readBy: [{ user_id: req?.user?.id, readAt: Date.now() }],
-            deliveryBy: [{ user_id: req?.user?.id, readAt: Date.now() }],
+            media_url: request?.media_url || ""
         };
         if (request?.reply_id) {
             payload.reply_id = request.reply_id; // Only include reply_id if provided
+        }
+        const groupDetails = await ChatGroupSchema.findById(payload.group_id);
+        if (!groupDetails) {
+            return res.status(400).json({ error: "Chat Group not found", msg: "Chat Group not found" });
+        }
+        const item = groupDetails?.users?.find((item)=>groupDetails?.group_type == "group" ?item === req?.user?.id:item === req?.user?.email);
+        if(!item){
+            return res.status(400).json({ error: "In Chat Group your are not member", msg: "Chat Group not found" });
         }
         if(request?.id){
             const messageData:any = await ChatMessages.findById(request?.id);
@@ -30,9 +35,11 @@ const createChatMessage = async (req: IRequestUserDetails, res: Response): Promi
             const updatedMessage = await ChatMessages.findById(request.id);
             return res.status(200).json({ message: "Message updated successfully", data: updatedMessage });
         }else{
-            const groupDetails = await ChatGroupSchema.findById(payload.group_id);
-            if (!groupDetails) {
-                return res.status(400).json({ error: "Chat Group not found", msg: "Chat Group not found" });
+            payload.messages_status = {
+                [req?.user?.id]:{ read_at:Date.now(), delivery_at:Date.now()}
+            }
+            if(req?.user?.id){
+                payload.sender_id= req?.user?.id;
             }
             const messages = new ChatMessages(payload);
             await messages.save();

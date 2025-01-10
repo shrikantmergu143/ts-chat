@@ -10,8 +10,7 @@ interface IGroupMemberSchema extends Document {
     message_type: "image" | "video" | "file" | "text";
     media_url?: string;
     is_deleted?: mongoose.Schema.Types.ObjectId[];
-    deliveryBy: Array<{ user_id: mongoose.Schema.Types.ObjectId | string; readAt: Date }>;
-    readBy: Array<{ user_id: mongoose.Schema.Types.ObjectId | string; readAt: Date }>;
+    messages_status: {[key:string]:{read_at:Date, delivery_at:Date}};
     created_at: Date;
     updated_at: Date;
 }
@@ -26,18 +25,7 @@ const ChatMessagesSchema = new mongoose.Schema({
     message_type: { type: String, enum: ["image", "video", "file", "text"] },
     media_url: { type: String },
     is_deleted: { type: [mongoose.Schema.Types.ObjectId], ref: "user" },
-    readBy: [
-        {
-            user_id: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
-            readAt: { type: Date, default: Date.now },
-        },
-    ],
-    deliveryBy: [
-        {
-            user_id: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
-            readAt: { type: Date, default: Date.now },
-        },
-    ],
+    messages_status: { type: Map, of: { read_at: { type: Date, default: null },delivery_at: { type: Date, default: null }},default: {},},
     created_at: { type: Date, default: Date.now, },
     updated_at: { type: Date, default: Date.now, },
 });

@@ -8,7 +8,7 @@ import getUserDetails from "../controller/auth/getUserDetails";
 import createChatGroup from "../controller/chatGroup/createChatGroup";
 import getChatGroup from "../controller/chatGroup/getChatGroup";
 import getGroupDetails from "../controller/chatGroup/getGroupDetails";
-import chatMessagesControllers from "../controller/chatMessages/chatGroupControllers";
+import chatMessageControllers from "../controller/chatMessages/chatMessageControllers";
 
 const router  = express.Router();
 const validator = createValidator({});
@@ -61,8 +61,8 @@ router.get(App_url.USER_DETAILS, verifyToken, getUserDetails);
 router.get(App_url.GET_CHAT_GROUP, validator.query(getChatGroupSchema) || validator.body(getChatGroupSchema), verifyToken, getChatGroup);
 router.post(App_url.CREATE_CHAT_GROUP, validator.body(createChatSchema), verifyToken, createChatGroup);
 router.get(`${App_url.GET_GROUP_DETAILS}/:group_id`, verifyToken, getGroupDetails);
-router.post(App_url.CREATE_CHAT_MESSAGE, validator.body(createChatMessageSchema), verifyToken, chatMessagesControllers.createChatMessage);
-router.put(`${App_url.UPDATE_CHAT_MESSAGE}/:message_id`, validator.body(createChatMessageSchema), verifyToken, chatMessagesControllers.createChatMessage);
-router.get(`${App_url.GET_CHAT_MESSAGES_LIST}/:group_id`, verifyToken, chatMessagesControllers.getChatMessages);
+router.post(App_url.CREATE_CHAT_MESSAGE, validator.body(createChatMessageSchema), verifyToken, chatMessageControllers.createChatMessage);
+router.put(`${App_url.UPDATE_CHAT_MESSAGE}/:message_id`, validator.body(createChatMessageSchema), verifyToken, chatMessageControllers.createChatMessage);
+router.get(`${App_url.GET_CHAT_MESSAGES_LIST}/:group_id`, verifyToken, chatMessageControllers.getChatMessages);
 
 export { router as authRoutes };
