@@ -3,6 +3,7 @@ const App_url = {
     signUp: "/api/sign-up",
     USER_DETAILS: "/api/user-details",
     CREATE_CHAT_GROUP: "/api/chat/create-group",
+    UPDATE_INVITE_GROUP: "/api/chat/update-invite-group",
     GET_CHAT_GROUP: "/api/chat/get-group",
     GET_GROUP_DETAILS: "/api/chat/get-group-details",
     CREATE_CHAT_MESSAGE: "/api/chat/create-message",

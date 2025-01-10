@@ -9,6 +9,7 @@ import createChatGroup from "../controller/chatGroup/createChatGroup";
 import getChatGroup from "../controller/chatGroup/getChatGroup";
 import getGroupDetails from "../controller/chatGroup/getGroupDetails";
 import chatMessageControllers from "../controller/chatMessages/chatMessageControllers";
+import chatGroupControllers from "../controller/chatGroup/chatGroupControllers";
 
 const router  = express.Router();
 const validator = createValidator({});
@@ -54,13 +55,22 @@ const createChatMessageSchema = Joi.object({
     reply_id:Joi.string().allow("").optional(),
     message_type: Joi.string().valid("image", "video", "text", "file"), // Removed optional chaining
 });
-
+const updateInviteGroup = Joi.object({
+    user_id:Joi.string(),
+    group_id:Joi.string(),
+    email:Joi.string(),
+    status: Joi.string().valid('pending', 'accepted', 'rejected', 'expired'), // Removed optional chaining
+});
+// Auth
 router.post(App_url.signUp, validator.body(registerSchema), authControllers.postSignUp);
 router.post(App_url.signIn,  validator.body(loginSchema), authControllers.postSignIn);
-router.get(App_url.USER_DETAILS, verifyToken, getUserDetails);
-router.get(App_url.GET_CHAT_GROUP, validator.query(getChatGroupSchema) || validator.body(getChatGroupSchema), verifyToken, getChatGroup);
-router.post(App_url.CREATE_CHAT_GROUP, validator.body(createChatSchema), verifyToken, createChatGroup);
-router.get(`${App_url.GET_GROUP_DETAILS}/:group_id`, verifyToken, getGroupDetails);
+router.get(App_url.USER_DETAILS, verifyToken, authControllers.getUserDetails);
+// Group
+router.get(App_url.GET_CHAT_GROUP, validator.query(getChatGroupSchema) || validator.body(getChatGroupSchema), verifyToken, chatGroupControllers.getChatGroup);
+router.post(App_url.CREATE_CHAT_GROUP, validator.body(createChatSchema), verifyToken, chatGroupControllers.createChatGroup);
+router.put(App_url.UPDATE_INVITE_GROUP, validator.body(updateInviteGroup), verifyToken, chatGroupControllers.updateInviteStatus);
+router.get(`${App_url.GET_GROUP_DETAILS}/:group_id`, verifyToken, chatGroupControllers.getGroupDetails);
+// Messages
 router.post(App_url.CREATE_CHAT_MESSAGE, validator.body(createChatMessageSchema), verifyToken, chatMessageControllers.createChatMessage);
 router.put(`${App_url.UPDATE_CHAT_MESSAGE}/:message_id`, validator.body(createChatMessageSchema), verifyToken, chatMessageControllers.createChatMessage);
 router.get(`${App_url.GET_CHAT_MESSAGES_LIST}/:group_id`, verifyToken, chatMessageControllers.getChatMessages);

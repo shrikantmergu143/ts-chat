@@ -1,5 +1,20 @@
 import mongoose, { Document, Schema } from "mongoose";
-interface IChatGroups extends Document {
+// Define the Invite schema that tracks the invite status for each user
+export interface IInvite {
+    user_id: mongoose.Schema.Types.ObjectId | String;  // Use user_id instead of email
+    email: String;
+    status: 'pending' | 'accepted' | 'rejected' | 'expired';
+    sent_at: Date;
+    responded_at?: Date; // Time when the user responded
+}
+
+// Unread message count for each user in a chat group
+export interface IUnreadCount {
+    user_id: mongoose.Schema.Types.ObjectId | String;  // User in the chat group
+    count: number;  // Number of unread messages for this user
+}
+
+export interface IChatGroups extends Document {
     name: string;
     group_type: string;
     users: string[];
@@ -10,12 +25,30 @@ interface IChatGroups extends Document {
     updated_at: Date;
     is_active: boolean;
     mode: string;
+    unread_counts: IUnreadCount[];
+    invites?: IInvite[]; // New field for invites
 }
+const UnreadCountSchema = new Schema<IUnreadCount>({
+    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    count: { type: Number, required: true, default: 0 },  // Default to 0 unread messages
+});
+const InviteSchema = new Schema<IInvite>({
+    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Referencing User model
+    email: { type: String },
+    status: { 
+        type: String, 
+        enum: ['pending', 'accepted', 'rejected', 'expired'], 
+        required: true, 
+        default: 'pending' 
+    },
+    sent_at: { type: Date, required: true, default: Date.now },
+    responded_at: { type: Date },
+});
 const ChatGroups = new Schema<IChatGroups>({
     name: { type: String, required: true},
     group_type: { type: String, enum: ['group', 'direct'], required: true },
     mode: { type: String, enum: ['private', 'public'], required: true },
-    // users: { type: [String], required: true },
+    is_active: { type: Boolean, default: true },
     users: {
         type: [String],
         required: true,
@@ -38,13 +71,15 @@ const ChatGroups = new Schema<IChatGroups>({
     created_by: { type: String, ref: 'user', required: true },
     created_at: { type: Date, required: true, default: Date.now },
     updated_at: { type: Date, required: true, default: Date.now },
-    is_active: { type: Boolean, default: true },
     group_id: {
         type: String,
         required: true,
         unique: true,
         default: () => new mongoose.Types.ObjectId().toString(), // Auto-generate if not provided
     },
+    unread_counts: [UnreadCountSchema],
+    invites: [InviteSchema], // Added field for invites
+
 
 });
 // ChatGroups.index({ group_type: 1 }, { unique: true });

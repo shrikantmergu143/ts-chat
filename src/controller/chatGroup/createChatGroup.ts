@@ -13,7 +13,7 @@ const createChatGroup = async (req:IRequestUserDetails, res: Response): Promise<
   }
   try {
     if(group_type === 'direct'){
-      const existsGroup = await  ChatGroupSchema.findOne({
+      const existsGroup = await ChatGroupSchema.findOne({
         group_type:"direct",
         users: normalizedUsers,
       })
@@ -25,22 +25,34 @@ const createChatGroup = async (req:IRequestUserDetails, res: Response): Promise<
       const chatGroup = new ChatGroupSchema({
         name: `${normalizedUsers[0]},${normalizedUsers[1]}`,
         group_type,
-        created_by: req?.user?.user_id,
+        created_by: req?.user?.id,
         users: normalizedUsers,
         mode:mode,
+        invites: normalizedUsers.map((item:string) => ({
+          email: item,
+          user_id: item == req?.user?.email? req?.user?.id:null,
+          status: item == req?.user?.email ?"accepted" :'pending',
+          sent_at: new Date(),
+        })),
       });
   
       await chatGroup.save();
       res.status(200).json({ message: 'Chat created successfully', data: getChatMemberPayload(chatGroup) });
     }else{
       if(normalizedUsers?.length >0){
-        const usersList = [...normalizedUsers, req?.user?.user_id]
+        const usersList = [...normalizedUsers, req?.user?.id]
         const chatGroup = new ChatGroupSchema({
           name: name,
           group_type,
-          created_by: req?.user?.user_id,
+          created_by: req?.user?.id,
           users: usersList,
           mode:mode,
+          invites: normalizedUsers.map((item:string) => ({
+            user_id:item,
+            email:item == req?.user?.id ? req?.user?.email :item,
+            status: item == req?.user?.id ?"accepted" :'pending',
+            sent_at: new Date(),
+          })),
         });
         await chatGroup.save();
         // Add users to the group

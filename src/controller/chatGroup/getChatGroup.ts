@@ -7,7 +7,7 @@ import { getEmailUsers } from "../../common/utils";
 const getChatGroup = async (req: IRequestUserDetails, res: Response): Promise<any> => {
   try {
     const groupType = req.query.group_type || req.body.group_type;
-    const userEmail = groupType ? groupType === "group"? [req?.user?.user_id] :[req?.user?.email] : [req?.user?.user_id, req?.user?.email];
+    const userEmail = groupType ? groupType === "group"? [req?.user?.id] :[req?.user?.email] : [req?.user?.id, req?.user?.email];
     if (!userEmail) {
       return res.status(400).json({ error: "User email not provided." });
     }

@@ -72,6 +72,41 @@
       "title": "Get Group Details",
       "url": "/api/chat/get-group-details/:group_id",
       "method": "GET"
+    },
+    {
+      "title": "Send Message",
+      "url": "api/chat/create-message",
+      "method": "POST",
+      "requestType": {
+        "message": "first 2039",
+        "media_url": "",
+        "group_id": "6779739f649a8e04ee613555",
+        "message_type": "text",
+        "reply_id": ""
+      }
+    },
+    {
+      "title": "Update Message",
+      "url": "api/chat/update-message/:message_id",
+      "method": "PUT",
+      "requestType": {
+        "message": "my first mesage 2",
+        "media_url": "",
+        "group_id": "6779739f649a8e04ee613555",
+        "message_type": "text",
+        "reply_id": ""
+      }
+    },
+    {
+      "title": "Get Message List",
+      "url": "api/chat/get-message-list/group_id",
+      "method": "GET",
+      "requestType": {
+        "limit": "5",
+        "page": "1",
+        "search": "",
+        "updated_at": ""
+      }
     }
   ]
 }

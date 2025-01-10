@@ -1,3 +1,5 @@
+import { IInvite, IUnreadCount } from "../modules/ChatGroups";
+
 export interface IUserModuleScheme {
     user_id: string;
     _id: string;  // Mongoose uses _id by default
@@ -131,6 +133,8 @@ export interface IChatGroupsMember {
     created_at:string;
     updated_at:string;
     group_id:string;
+    invites?:IInvite[];
+    unread_counts?:IUnreadCount[];
 }
 const getChatMemberPayload = (data: any) =>{
     const payload:IChatGroupsMember = {
@@ -144,6 +148,8 @@ const getChatMemberPayload = (data: any) =>{
         created_at:"",
         updated_at:"",
         group_id:"",
+        invites:[],
+        unread_counts:[],
     };
     
     if(data?.name){
@@ -154,6 +160,12 @@ const getChatMemberPayload = (data: any) =>{
     }
     if(data?.users){
         payload.users = data?.users
+    }
+    if(data?.invites){
+        payload.invites = data?.invites
+    }
+    if(data?.unread_counts){
+        payload.unread_counts = data?.unread_counts
     }
     if(data?.profile_url){
         payload.profile_url = data?.profile_url
@@ -206,6 +218,8 @@ const getChatGroupItemPayload = (item: any) =>{
         updated_at:"",
         group_id:"",
         mode:"",
+        invites:[],
+        unread_counts:[],
     }
     if(item?._id){
         payload._id = item?._id;
@@ -225,6 +239,12 @@ const getChatGroupItemPayload = (item: any) =>{
     }
     if(item?.users){
         payload.users = item?.users;
+    }
+    if(item?.invites){
+        payload.invites = item?.invites
+    }
+    if(item?.unread_counts){
+        payload.unread_counts = item?.unread_counts
     }
     if(item?.profile_url){
         payload.profile_url = item?.profile_url;

@@ -5,29 +5,31 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const { TOKEN_KEY } = process.env;
-
+interface IRequestPayload{
+  email?: string;
+  password?: string;
+  username?: string;
+  first_name?: string;
+  last_name?: string;
+  access_token?: string;
+  user_id?:string;
+  iat?:number;
+  exp?:number;
+  [key: string]: any;
+  name: string;
+  group_type: string | "direct" | "group";
+  users: string[];
+  page?: number | string;
+  limit?: number;
+  message?:string;
+  media_url?:string;
+  group_id?:string;
+  message_type?:string;
+  status?: 'pending' | 'accepted' | 'rejected' | 'expired';
+}
 export interface IRequestUserDetails extends Request {
-  body: {
-    email?: string;
-    password?: string;
-    username?: string;
-    first_name?: string;
-    last_name?: string;
-    access_token?: string;
-    user_id?:string;
-    iat?:number;
-    exp?:number;
-    [key: string]: any;
-    name: string;
-    group_type: string | "direct" | "group";
-    users: string[];
-    page?: number;
-    limit?: number;
-    message?:string;
-    media_url?:string;
-    group_id?:string;
-    message_type?:string;
-  } | any;
+  body: IRequestPayload | any;
+  query: IRequestPayload | any;
   user?: DecodedToken | any;
 }
 
