@@ -1,8 +1,9 @@
 import { Response, Request } from "express";
-import ChatGroupSchema from "../../modules/ChatGroups";
+import ChatGroupSchema, { IInvite } from "../../modules/ChatGroups";
 import { IRequestUserDetails } from "../../middleware/auth";
 import { getChatGroupItemPayload } from "../../common/userPayload";
 import { getEmailUsers } from "../../common/utils";
+import UserModule from "../../modules/UserModule";
 
 const getChatGroup = async (req: IRequestUserDetails, res: Response): Promise<any> => {
   try {
@@ -48,10 +49,16 @@ const getChatGroup = async (req: IRequestUserDetails, res: Response): Promise<an
       ...(search && { $text: { $search: search.trim() } }),
     });
 
-    const payload = groupChatList.map((item) => {
+    const usersDetails: (string | null)[] = [];
+    const payload = groupChatList?.map?.((item) => {
       const payloadItem = getChatGroupItemPayload(item);
       if(payloadItem?.users && payloadItem?.group_type == "direct"){
-        const directEmail = getEmailUsers(req?.user?.email, payloadItem?.users);
+        const directEmail = getEmailUsers(req?.user, payloadItem?.users);
+        const getAccepted = payloadItem?.invites?.find((item:IInvite)=>item?.status != "accepted");
+        if(!getAccepted){
+          usersDetails?.push(directEmail);
+          payloadItem.user_ids = directEmail;
+        }
         if(directEmail){
           payloadItem.name = directEmail;
         }
@@ -60,6 +67,26 @@ const getChatGroup = async (req: IRequestUserDetails, res: Response): Promise<an
         ...payloadItem,
       }
     });
+
+    if(usersDetails?.length > 0){
+      const userDetails = await UserModule.find({
+        $or: [
+          { email: { $in: usersDetails } },
+          { _id: { $in: usersDetails } }
+        ]
+      });
+      payload.forEach((item) => {
+        if (item.user_ids) {
+          const user = userDetails?.find?.((user) => 
+            user.email == item.user_ids || user._id.toString() == item.user_ids
+          );
+          if(user){
+            item.name = `${user?.first_name} ${user?.last_name}`
+            item.userDetails = user;
+          }
+        }
+      });
+    }
 
     res.status(200).json({
       data: {

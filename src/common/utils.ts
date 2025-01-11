@@ -1,5 +1,5 @@
-export const getEmailUsers = (email:string, users:string[]) =>{
-    const response = users?.filter((item)=>item!=email);
+export const getEmailUsers = (user:any, users:string[]) =>{
+    const response = users?.filter((item)=>item!=user?.id && item!=user?.email);
     if(response?.length>0){
         return response[0];
     }else{
