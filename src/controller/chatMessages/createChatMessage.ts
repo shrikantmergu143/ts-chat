@@ -22,7 +22,7 @@ const createChatMessage = async (req: IRequestUserDetails, res: Response): Promi
         if (!groupDetails) {
             return res.status(400).json({ error: "Chat Group not found", msg: "Chat Group not found" });
         }
-        const item = groupDetails?.users?.find((item)=>groupDetails?.group_type == "group" ?item === req?.user?.id:item === req?.user?.email);
+        const item = groupDetails?.users?.find((item)=>item === req?.user?.id);
         if(!item){
             return res.status(400).json({ error: "In Chat Group your are not member", msg: "Chat Group not found" });
         }

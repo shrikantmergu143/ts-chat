@@ -74,6 +74,17 @@
       "method": "GET"
     },
     {
+      "title": "Update Invite Group",
+      "url": "/api/chat/update-invite-group",
+      "method": "PUT",
+      "requestType": {
+        "status": "accepted",
+        "user_id": "67813fdd7741f2562b8dbed9",
+        "email": "shrikantmergu123@gmail.com",
+        "group_id": "678167e900c5a3a11345e84e"
+      }
+    },
+    {
       "title": "Send Message",
       "url": "api/chat/create-message",
       "method": "POST",

@@ -237,6 +237,12 @@ const getChatGroupItemPayload = (item: any) =>{
     if(item?.group_type){
         payload.group_type = item?.group_type;
     }
+    if(item?.invite_users){
+        payload.invite_users = item?.invite_users;
+    }
+    if(item?.user_status){
+        payload.user_status = item?.user_status
+    }
     if(item?.users){
         payload.users = item?.users;
     }

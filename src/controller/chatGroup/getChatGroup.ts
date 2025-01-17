@@ -8,7 +8,7 @@ import UserModule from "../../modules/UserModule";
 const getChatGroup = async (req: IRequestUserDetails, res: Response): Promise<any> => {
   try {
     const groupType = req.query.group_type || req.body.group_type;
-    const userEmail = groupType ? groupType === "group"? [req?.user?.id] :[req?.user?.email] : [req?.user?.id, req?.user?.email];
+    const userEmail = groupType ? groupType === "group" ? [req?.user?.id] : [req?.user?.email] : [req?.user?.id, req?.user?.email];
     if (!userEmail) {
       return res.status(400).json({ error: "User email not provided." });
     }
@@ -32,7 +32,7 @@ const getChatGroup = async (req: IRequestUserDetails, res: Response): Promise<an
 
     if (groupType) {
       filter.group_type = groupType; // Filter for a specific group type
-    }else{
+    } else {
       filter.group_type = ["group", "direct"];
     }
 
@@ -52,35 +52,36 @@ const getChatGroup = async (req: IRequestUserDetails, res: Response): Promise<an
     const usersDetails: (string | null)[] = [];
     const payload = groupChatList?.map?.((item) => {
       const payloadItem = getChatGroupItemPayload(item);
-      if(payloadItem?.users && payloadItem?.group_type == "direct"){
+      if (payloadItem?.users && payloadItem?.group_type == "direct") {
         const directEmail = getEmailUsers(req?.user, payloadItem?.users);
-        const getAccepted = payloadItem?.invites?.find((item:IInvite)=>item?.status != "accepted");
-        if(!getAccepted){
+        payloadItem.invite_users = payloadItem?.invites?.find?.((item:IInvite)=>item?.user_id == directEmail || item?.email == directEmail)
+        if (directEmail) {
           usersDetails?.push(directEmail);
           payloadItem.user_ids = directEmail;
-        }
-        if(directEmail){
           payloadItem.name = directEmail;
         }
       }
+      payloadItem.user_status = payloadItem?.invites?.find?.((item:IInvite)=>item?.user_id == req?.user?.id || item?.email == req?.user?.email);
       return {
         ...payloadItem,
       }
     });
 
-    if(usersDetails?.length > 0){
+    const emailIds = usersDetails?.filter((item)=>item?.includes("@"));
+    const usersIds = usersDetails?.filter((item)=>!item?.includes("@"));
+    if (emailIds?.length > 0 || usersIds?.length > 0) {
       const userDetails = await UserModule.find({
         $or: [
-          { email: { $in: usersDetails } },
-          { _id: { $in: usersDetails } }
+          { email: { $in: emailIds } },
+          { _id: { $in: usersIds } }
         ]
       });
       payload.forEach((item) => {
         if (item.user_ids) {
-          const user = userDetails?.find?.((user) => 
+          const user = userDetails?.find?.((user) =>
             user.email == item.user_ids || user._id.toString() == item.user_ids
           );
-          if(user){
+          if (user) {
             item.name = `${user?.first_name} ${user?.last_name}`
             item.userDetails = user;
           }

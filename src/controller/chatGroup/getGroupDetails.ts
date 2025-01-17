@@ -37,8 +37,11 @@ const getGroupDetails = async (req: IRequestUserDetails, res: Response): Promise
                 } else {
                     payload.name = directEmail;
                 }
+                payload.invite_users = groupDetails?.invites?.find?.((item)=>item?.user_id == directEmail || item?.email == directEmail)
             }
         }
+        payload.user_status = groupDetails?.invites?.find?.((item)=>item?.user_id == req?.user?.id || item?.email == req?.user?.email);
+
         res.status(200).json({ message: 'Group fetched successfully', data: getChatGroupItemPayload(payload) });
     } catch (err: any) {
         res.status(500).json({ error: "Failed to fetch groups details", details: err.message });
