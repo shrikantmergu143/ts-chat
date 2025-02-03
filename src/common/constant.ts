@@ -9,6 +9,7 @@ const App_url = {
     CREATE_CHAT_MESSAGE: "/api/chat/create-message",
     UPDATE_CHAT_MESSAGE: "/api/chat/update-message",
     GET_CHAT_MESSAGES_LIST: "/api/chat/get-message-list",
+    search: "/api/search",
 }
 
 export { App_url };
