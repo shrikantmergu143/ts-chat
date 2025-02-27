@@ -4,8 +4,9 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
-import { registerSocketServer } from './socketServer';
+// import { registerSocketServer } from './socketServer';
 import appRouter from './router/appRouter';
+import { registerSocketServer } from './meetSocket';
 
 dotenv.config();
 
