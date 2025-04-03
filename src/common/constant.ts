@@ -8,8 +8,10 @@ const App_url = {
     GET_GROUP_DETAILS: "/api/chat/get-group-details",
     CREATE_CHAT_MESSAGE: "/api/chat/create-message",
     UPDATE_CHAT_MESSAGE: "/api/chat/update-message",
+    DELETE_CHAT_MESSAGE: "/api/chat/delete-message",
     GET_CHAT_MESSAGES_LIST: "/api/chat/get-message-list",
     search: "/api/search",
+    UPLOAD_FILE: "/api/upload-file",
 }
 
 export { App_url };

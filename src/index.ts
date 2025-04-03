@@ -7,7 +7,6 @@ import path from 'path';
 // import { registerSocketServer } from './socketServer';
 import appRouter from './router/appRouter';
 import { registerSocketServer } from './meetSocket';
-
 dotenv.config();
 
 const app = express();

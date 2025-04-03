@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 // Define the interface for the ChatMessages schema
-interface IGroupMemberSchema extends Document {
+export interface IGroupMemberSchema extends Document {
     chat_id: mongoose.Schema.Types.ObjectId | string;
     group_id: mongoose.Schema.Types.ObjectId | string;
     sender_id: mongoose.Schema.Types.ObjectId | string;

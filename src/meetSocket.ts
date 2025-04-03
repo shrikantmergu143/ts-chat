@@ -81,6 +81,7 @@ async function handleChatMessage(
       handleUserCall(request, socketSent,);
       break;
     case 'call:accepted':
+      console.log("request", request)
       handleCallAccepted(request, socketSent,);
       break;
     case 'peer:nego:needed':
@@ -103,9 +104,9 @@ async function handleChatMessage(
 // Handle room join
 function handleRoomJoin({ email, room }: any, socket: CustomSocket) {
   // Notify all users in the room
-  broadcastToRoom(room, {
+  broadcastToRoom({
     type: 'user:joined',
-    request: { email, id: socket.id },
+    request: { email, id: socket.id, room:room },
   });
 
   // Send confirmation to user
@@ -163,7 +164,7 @@ function sendMessageToUser(userId: string, message: WebSocketMessage) {
 }
 
 // Helper function to broadcast to a room
-function broadcastToRoom(room: string, message: WebSocketMessage) {
+function broadcastToRoom(message: WebSocketMessage) {
   connectedSockets.forEach((socket) => {
     socket.send(JSON.stringify(message));
   });
