@@ -2,7 +2,7 @@ import { Response, Request } from "express";
 import { IRequestUserDetails } from "../../middleware/auth";
 import ChatMessages, { IGroupMemberSchema } from "../../modules/ChatMessages";
 
-const createChatMessage = async (req: IRequestUserDetails, res: Response): Promise<any> => {
+const deleteChatMessage = async (req: IRequestUserDetails, res: Response): Promise<any> => {
     const request = req.body;
     if(req?.params?.message_id){
         request.id = req?.params?.message_id;
@@ -18,4 +18,4 @@ const createChatMessage = async (req: IRequestUserDetails, res: Response): Promi
         res.status(500).json({ error: "Failed to create chat", err });
     }
 };
-export default createChatMessage;
+export default deleteChatMessage;
