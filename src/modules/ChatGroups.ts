@@ -11,7 +11,7 @@ export interface IInvite {
 // Unread message count for each user in a chat group
 export interface IUnreadCount {
     user_id: mongoose.Schema.Types.ObjectId | String;  // User in the chat group
-    count: number;  // Number of unread messages for this user
+    message_ids: mongoose.Schema.Types.ObjectId[] | String[];  // Number of unread messages for this user
 }
 
 export interface IChatGroups extends Document {
@@ -30,7 +30,7 @@ export interface IChatGroups extends Document {
 }
 const UnreadCountSchema = new Schema<IUnreadCount>({
     user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    count: { type: Number, required: true, default: 0 },  // Default to 0 unread messages
+    message_ids: { type: [mongoose.Schema.Types.ObjectId], ref: 'ChatMessages', required: true }
 });
 const InviteSchema = new Schema<IInvite>({
     user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Referencing User model

@@ -79,7 +79,7 @@ router.get(`${App_url.GET_GROUP_DETAILS}/:group_id`, verifyToken, chatGroupContr
 router.post(App_url.CREATE_CHAT_MESSAGE, validator.body(createChatMessageSchema), verifyToken, chatMessageControllers.createChatMessage);
 router.put(`${App_url.UPDATE_CHAT_MESSAGE}/:message_id`, validator.body(createChatMessageSchema), verifyToken, chatMessageControllers.createChatMessage);
 router.get(`${App_url.GET_CHAT_MESSAGES_LIST}/:group_id`, verifyToken, chatMessageControllers.getChatMessages);
-router.delete(`${App_url.DELETE_CHAT_MESSAGE}/:message_id`, verifyToken, chatMessageControllers.createChatMessage);
+router.delete(`${App_url.DELETE_CHAT_MESSAGE}/:message_id`, verifyToken, chatMessageControllers.deleteChatMessage);
 
 // Search Engine
 router.post(App_url.search, puppeteerControllers.searchEngine);
