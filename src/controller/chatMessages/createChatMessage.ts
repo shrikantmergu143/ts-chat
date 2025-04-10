@@ -46,22 +46,16 @@ const createChatMessage = async (req: IRequestUserDetails, res: Response): Promi
             if (messages?._id) {
                 const messageId:any = messages._id;
                 const updatedUnreadCounts = groupDetails?.unread_counts || [];
-            
                 groupDetails?.users?.forEach((userId) => {
                     if (userId !== req?.user?.id) {
-                        const userUnRead = updatedUnreadCounts.find(
-                            (u) => u?.user_id?.toString?.() === userId?.toString?.()
-                        );
-            
+                        const userUnRead = updatedUnreadCounts.find((u) => u?.user_id?.toString?.() === userId?.toString?.());
                         if (!userUnRead) {
                             updatedUnreadCounts.push({
                                 message_ids: [messageId],
                                 user_id: userId,
                             });
                         } else if (
-                            !userUnRead.message_ids.some(
-                                (id) => id?.toString?.() === messageId?.toString?.()
-                            )
+                            !userUnRead.message_ids.some((id) => id?.toString?.() === messageId?.toString?.())
                         ) {
                             userUnRead.message_ids.push(messageId);
                         }

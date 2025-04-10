@@ -37,7 +37,7 @@ const getChatGroup = async (req: IRequestUserDetails, res: Response): Promise<an
     }
 
     // Fetch chat groups
-    const groupChatList = await ChatGroupSchema.find(filter).skip(skip).limit(limit);
+    const groupChatList = await ChatGroupSchema.find(filter).sort({ updated_at: -1 }).skip(skip).limit(limit);
 
     if (!groupChatList || groupChatList.length === 0) {
       return res.status(400).json({ error: "No chat groups found." });
