@@ -65,6 +65,7 @@ const createChatMessage = async (req: IRequestUserDetails, res: Response): Promi
                 groupDetails.updated_at = new Date();
                 await groupDetails?.save?.();
             }
+            
             res.status(200).json({ message: "Message sent successfully", data: messages });
         }
     } catch (err) {

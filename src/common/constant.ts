@@ -10,8 +10,12 @@ const App_url = {
     UPDATE_CHAT_MESSAGE: "/api/chat/update-message",
     DELETE_CHAT_MESSAGE: "/api/chat/delete-message",
     GET_CHAT_MESSAGES_LIST: "/api/chat/get-message-list",
+    CHAT_MESSAGES_READ: "/api/chat/read-message",
     search: "/api/search",
     UPLOAD_FILE: "/api/upload-file",
+    CHAT_NOTIFICATION_ADD: "/api/chat/notifications/add",
+    CHAT_NOTIFICATION_GET: "/api/chat/notifications/get",
+    CHAT_NOTIFICATION_MARK_READ: "/api/chat/notifications/mark-read",
 }
 
 export { App_url };

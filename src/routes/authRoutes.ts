@@ -9,6 +9,7 @@ import chatGroupControllers from "../controller/chatGroup/chatGroupControllers";
 import puppeteerControllers from "../controller/puppeteer/puppeteerControllers";
 import multer from "multer";
 import { uploadImage } from "../controller/upload/uploadController";
+import notificationControllers from "../controller/notifications/notificationControllers";
 
 // Multer configuration (store in memory for direct upload)
 const storage = multer.memoryStorage();
@@ -77,10 +78,15 @@ router.put(App_url.UPDATE_INVITE_GROUP, validator.body(updateInviteGroup), verif
 router.get(`${App_url.GET_GROUP_DETAILS}/:group_id`, verifyToken, chatGroupControllers.getGroupDetails);
 // Messages
 router.post(App_url.CREATE_CHAT_MESSAGE, validator.body(createChatMessageSchema), verifyToken, chatMessageControllers.createChatMessage);
+router.post(App_url.CHAT_MESSAGES_READ, verifyToken, chatMessageControllers.markMessagesAsRead);
 router.put(`${App_url.UPDATE_CHAT_MESSAGE}/:message_id`, validator.body(createChatMessageSchema), verifyToken, chatMessageControllers.createChatMessage);
 router.get(`${App_url.GET_CHAT_MESSAGES_LIST}/:group_id`, verifyToken, chatMessageControllers.getChatMessages);
 router.delete(`${App_url.DELETE_CHAT_MESSAGE}/:message_id`, verifyToken, chatMessageControllers.deleteChatMessage);
 
+// Notification
+router.post(App_url.CHAT_NOTIFICATION_ADD, verifyToken, notificationControllers.addNotificationByMessage);
+router.get(`${App_url.CHAT_NOTIFICATION_GET}`, verifyToken, notificationControllers.getNotificationByMessage);
+router.get(`${App_url.CHAT_NOTIFICATION_MARK_READ}/:group_id`, verifyToken, notificationControllers.readNotificationByMessage);
 // Search Engine
 router.post(App_url.search, puppeteerControllers.searchEngine);
 router.post(App_url.UPLOAD_FILE, verifyToken, upload.single("image"), uploadImage);
