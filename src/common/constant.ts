@@ -16,6 +16,7 @@ const App_url = {
     CHAT_NOTIFICATION_ADD: "/api/chat/notifications/add",
     CHAT_NOTIFICATION_GET: "/api/chat/notifications/get",
     CHAT_NOTIFICATION_MARK_READ: "/api/chat/notifications/mark-read",
+    API_RESUME: "/api/resume",
 }
 
 export { App_url };

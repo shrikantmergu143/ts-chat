@@ -10,6 +10,7 @@ import puppeteerControllers from "../controller/puppeteer/puppeteerControllers";
 import multer from "multer";
 import { uploadImage } from "../controller/upload/uploadController";
 import notificationControllers from "../controller/notifications/notificationControllers";
+import {   createResume, getAllResumes, getResumeById, updateResume, deleteResume } from "../controller/resume/resume.controller";
 
 // Multer configuration (store in memory for direct upload)
 const storage = multer.memoryStorage();
@@ -87,6 +88,12 @@ router.delete(`${App_url.DELETE_CHAT_MESSAGE}/:message_id`, verifyToken, chatMes
 router.post(App_url.CHAT_NOTIFICATION_ADD, verifyToken, notificationControllers.addNotificationByMessage);
 router.get(`${App_url.CHAT_NOTIFICATION_GET}`, verifyToken, notificationControllers.getNotificationByMessage);
 router.get(`${App_url.CHAT_NOTIFICATION_MARK_READ}/:group_id`, verifyToken, notificationControllers.readNotificationByMessage);
+
+router.post(`${App_url.API_RESUME}`, verifyToken, createResume);
+router.get(`${App_url.API_RESUME}`, verifyToken, getAllResumes);
+router.get(`${App_url.API_RESUME}/:id`, verifyToken, getResumeById);
+router.put(`${App_url.API_RESUME}/:id`, verifyToken, updateResume);
+router.delete(`${App_url.API_RESUME}/:id`, verifyToken, deleteResume);
 // Search Engine
 router.post(App_url.search, puppeteerControllers.searchEngine);
 router.post(App_url.UPLOAD_FILE, verifyToken, upload.single("image"), uploadImage);
