@@ -16,6 +16,7 @@ export const createResume = async (req: IRequestUserDetails, res: Response): Pro
   }
 };
 
+
 // Get All Resumes
 export const getAllResumes = async (req: IRequestUserDetails, res: Response): Promise<any>  => {
   try {
